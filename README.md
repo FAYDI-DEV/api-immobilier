@@ -9,8 +9,8 @@ API REST d'annonces immobilières réalisée dans le cadre du cours **Introducti
 | Membre | Tables |
 |---|---|
 | Faydi Alili | `roles`, `utilisateurs`, authentification JWT |
-| _Membre 2_ | `types_propriete`, `proprietes` |
-| _Membre 3_ | `photos`, `visites`, `favoris` |
+| Aimed Hassani | `types_propriete`, `proprietes` |
+| Naroun Aziz | `photos`, `visites`, `favoris` |
 
 ## Installation
 
