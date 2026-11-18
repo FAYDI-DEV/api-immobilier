@@ -6,6 +6,7 @@ import Propriete from "./Propriete.js";
 import Photo from "./Photo.js";
 import Visite from "./Visite.js";
 import Favori from "./Favori.js";
+import Avis from "./Avis.js";
 
 //Ajouter les relations
 
@@ -39,4 +40,10 @@ Propriete.belongsToMany(Utilisateur, { through: Favori, foreignKey: "proprieteId
 Favori.belongsTo(Utilisateur, { foreignKey: "utilisateurId" })
 Favori.belongsTo(Propriete, { foreignKey: "proprieteId" })
 
-export { Role, Utilisateur, TypePropriete, Propriete, Photo, Visite, Favori }
+// Avis : un utilisateur ecrit plusieurs avis, une propriete recoit plusieurs avis (1-N)
+Utilisateur.hasMany(Avis, { foreignKey: "utilisateurId", as: "avisEcrits" })
+Avis.belongsTo(Utilisateur, { foreignKey: "utilisateurId", as: "auteur" })
+Propriete.hasMany(Avis, { foreignKey: "proprieteId", onDelete: "CASCADE" })
+Avis.belongsTo(Propriete, { foreignKey: "proprieteId" })
+
+export { Role, Utilisateur, TypePropriete, Propriete, Photo, Visite, Favori, Avis }

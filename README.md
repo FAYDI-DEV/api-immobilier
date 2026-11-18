@@ -10,7 +10,8 @@ API REST d'annonces immobilières réalisée dans le cadre du cours **Introducti
 |---|---|
 | Faydi Alili | `roles`, `utilisateurs`, authentification JWT |
 | Aimed Hassani | `types_propriete`, `proprietes` |
-| Naroun Aziz | `photos`, `visites`, `favoris` |
+| Mohamed Amine Hassani | `photos`, `visites` |
+| Naroun Aziz | `favoris`, `avis` |
 
 ## Installation
 
@@ -42,7 +43,7 @@ npm install
 
 ## Base de données
 
-7 tables : `Roles`, `Utilisateurs`, `types_propriete`, `Proprietes`, `Photos`, `Visites`, `Favoris`.
+8 tables : `Roles`, `Utilisateurs`, `types_propriete`, `Proprietes`, `Photos`, `Visites`, `Favoris`, `avis`.
 
 ```mermaid
 erDiagram
@@ -54,6 +55,8 @@ erDiagram
     Utilisateurs ||--o{ Visites : "demande (client)"
     Utilisateurs ||--o{ Favoris : "aime"
     Proprietes ||--o{ Favoris : "est aimee"
+    Utilisateurs ||--o{ avis : "ecrit"
+    Proprietes ||--o{ avis : "recoit"
 
     Roles { int id PK
         string titre }
@@ -93,6 +96,12 @@ erDiagram
         int proprieteId FK
         int clientId FK }
     Favoris { int id PK
+        int utilisateurId FK
+        int proprieteId FK
+        date createdAt }
+    avis { int id PK
+        int note
+        text commentaire
         int utilisateurId FK
         int proprieteId FK
         date createdAt }
@@ -158,6 +167,12 @@ Les diagrammes Lucidchart (modèle entité-associations et modèle physique) se 
 | GET | `/api/favoris` | 🔑 | Mes favoris (paginé) |
 | POST | `/api/favoris` | 🔑 | Ajouter `{ proprieteId }` |
 | DELETE | `/api/favoris/:proprieteId` | 🔑 | Retirer |
+| **Avis** ||||
+| GET | `/api/avis?proprieteId=&page=&limit=` | 🔓 | Liste paginée (+ note moyenne si `proprieteId`) |
+| GET | `/api/avis/:id` | 🔓 | Détails |
+| POST | `/api/avis` | 👤 client, admin | Donner un avis `{ proprieteId, note (1-5), commentaire }` (un seul par propriété) |
+| PUT | `/api/avis/:id` | 🔑 auteur | Modifier son avis |
+| DELETE | `/api/avis/:id` | 🔑 auteur, admin | Supprimer |
 
 ### Pagination
 

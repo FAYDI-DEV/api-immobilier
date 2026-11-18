@@ -2,5 +2,5 @@
 .env
 /uploads/*
 !/uploads/.gitkeep
-database.sqlite
+ 
 postman/.dependencies/

@@ -18,6 +18,7 @@ import proprieteRoute from "./routes/proprieteRoute.js"
 import photoRoute from "./routes/photoRoute.js"
 import visiteRoute from "./routes/visiteRoute.js"
 import favoriRoute from "./routes/favoriRoute.js"
+import avisRoute from "./routes/avisRoute.js"
 
 dotenv.config()
 const app = express()
@@ -51,6 +52,7 @@ app.use("/api/proprietes", proprieteRoute)
 app.use("/api/photos", photoRoute)
 app.use("/api/visites", visiteRoute)
 app.use("/api/favoris", favoriRoute)
+app.use("/api/avis", avisRoute)
 
 //Route inexistante
 app.use((req, res) => res.status(404).json({ message: "Route introuvable" }))
