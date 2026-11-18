@@ -1,6 +1,6 @@
 import { validationResult } from "express-validator"
 import { Op } from "sequelize"
-import { Propriete, TypePropriete, Utilisateur, Photo, Visite } from "../models/relation.js"
+import { Propriete, TypePropriete, Utilisateur, Photo, Visite, Avis } from "../models/relation.js"
 import { getPagination, pagedResponse } from "../utils/pagination.js"
 import { urlFichier, supprimerFichier, nettoyerUploads } from "../utils/fichiers.js"
 import database from "../config/connection.js"
@@ -132,6 +132,7 @@ export const deletePropriete = async (req, res) => {
         propriete.Photos.forEach(p => supprimerFichier(p.url))
         await Photo.destroy({ where: { proprieteId: propriete.id } })
         await Visite.destroy({ where: { proprieteId: propriete.id } })
+        await Avis.destroy({ where: { proprieteId: propriete.id } })
         await propriete.destroy()
         res.status(200).json({ message: "Propriete supprimee" })
     } catch (error) {

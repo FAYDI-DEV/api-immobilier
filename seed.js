@@ -2,7 +2,7 @@
 //Lancer avec : npm run seed
 import bcrypt from "bcryptjs"
 import database from "./config/connection.js"
-import { Role, Utilisateur, TypePropriete, Propriete } from "./models/relation.js"
+import { Role, Utilisateur, TypePropriete, Propriete, Avis } from "./models/relation.js"
 
 try {
     await database.sync()
@@ -22,7 +22,7 @@ try {
         where: { email: "agent@immo.ca" },
         defaults: { nom: "Tremblay", prenom: "Julie", mdp, telephone: "8195551234", roleId: agent.id }
     })
-    await Utilisateur.findOrCreate({
+    const [userClient] = await Utilisateur.findOrCreate({
         where: { email: "client@immo.ca" },
         defaults: { nom: "Gagnon", prenom: "Marc", mdp, roleId: client.id }
     })
@@ -41,6 +41,12 @@ try {
             { titre: "Condo moderne au centre-ville", description: "Condo lumineux avec vue sur la riviere, stationnement inclus.", prix: 389000, adresse: "45 rue Laurier", ville: "Gatineau", superficie: 900, chambres: 2, sallesBain: 1, statut: "a vendre", typeId: types.Condo.id, agentId: userAgent.id },
             { titre: "4 1/2 a louer pres de La Cite", description: "Appartement spacieux, chauffe et eclaire, pres du transport en commun.", prix: 1650, adresse: "801 promenade de l'Aviation", ville: "Ottawa", superficie: 1000, chambres: 2, sallesBain: 1, statut: "a louer", typeId: types.Appartement.id, agentId: userAgent.id }
         ])
+    }
+
+    //5. Un avis de depart
+    if (await Avis.count() === 0) {
+        const premiere = await Propriete.findOne({ order: [["id", "ASC"]] })
+        await Avis.create({ note: 5, commentaire: "Tres belle maison, agent tres disponible.", proprieteId: premiere.id, utilisateurId: userClient.id })
     }
 
     console.log("Donnees de depart creees ✅")
